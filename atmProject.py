@@ -27,15 +27,15 @@ def main():
                 print("1. Withdrawal")
                 print("2. Cash Deposit")
                 print("3. Complaint")
-                selectedOption = int(input("Please select an option:"))
+                selectedOption = int(input("Please select an option: \n"))
 
                 if selectedOption == 1:
                     print("You selected %s" % selectedOption)
-                    withdrawAmount = int(input("How much would you like to withdraw?"))
+                    withdrawAmount = int(input("How much would you like to withdraw? \n"))
                     currentBalance[userID] = currentBalance[userID] - withdrawAmount
                     print("Your current balance is now: %d cash" % currentBalance[userID])
                     print("Take your %s cash" % withdrawAmount)
-                    return_menu = input("Return to menu? y/n")
+                    return_menu = input("Return to menu? y/n \n")
                     if return_menu == "y":
                         menu()
                     else:
@@ -43,10 +43,10 @@ def main():
                         exit()
                 elif selectedOption == 2:
                     print("You selected %s" % selectedOption)
-                    depositAmount = int(input("How much would you like to deposit?"))
+                    depositAmount = int(input("How much would you like to deposit? \n"))
                     currentBalance[userID] = currentBalance[userID] + depositAmount
                     print("Your current balance is now: %d cash" % currentBalance[userID])
-                    return_menu = input("Return to menu? y/n")
+                    return_menu = input("Return to menu? y/n \n")
                     if return_menu == "y":
                         menu()
                     else:
@@ -54,9 +54,9 @@ def main():
                         exit()
                 elif selectedOption == 3:
                     print("You selected %s" % selectedOption)
-                    complaint = input("What issue would you like to report?")
+                    complaint = input("What issue would you like to report? \n")
                     print("Thank you for contacting us about %s." % complaint)
-                    return_menu = input("Return to menu? y/n")
+                    return_menu = input("Return to menu? y/n \n")
                     if return_menu == "y":
                         menu()
                     else:
@@ -65,7 +65,7 @@ def main():
 
                 else:
                     print("Invalid option selected, please try again.")
-                    return_menu = input("Return to menu? y/n")
+                    return_menu = input("Return to menu? y/n \n")
                     if return_menu == "y":
                         menu()
                     else:
@@ -75,9 +75,15 @@ def main():
             menu()
         else:
             print("Password incorrect, please try again.")
+            return_login = input("Return to sign in screen? y/n \n")
+            if return_login == "y":
+                main()
+            else:
+                print("Goodbye")
+                exit()
     else:
         print("Name not found, please try again.")
-        return_login = input("Return to sign in screen? y/n")
+        return_login = input("Return to sign in screen? y/n \n")
         if return_login == "y":
             main()
         else:
