@@ -11,7 +11,7 @@ user_database = {1111111111: ['Soph', 'Velasquez', 'soph@email.com', 'pwSoph'],
 # INITIALIZING THE SYSTEM // DEFINING FUNCTIONS
 
 def init():
-    print('*****ʕ·͡ᴥ·ʔ Welcome to bank Sophos. ʕ·͡ᴥ·ʔ*****')
+    print("\n*****ʕ·͡ᴥ·ʔ Welcome to bank Sophos. ʕ·͡ᴥ·ʔ*****\n")
     have_account = int(input('Do you have an account with us? \n 1 (Yes) \n 2 (No)\n'))
     if have_account == 1:
         login()
@@ -47,7 +47,7 @@ def login():
     for account_number, user_details in user_database.items():
         if account_number == attempted_account_number and user_details[3] == attempted_password:
             flag = 1
-            print("ʕっ•ᴥ•ʔっ Login successful! ʕっ•ᴥ•ʔっ")
+            print("\nʕっ•ᴥ•ʔっ Login successful! ʕっ•ᴥ•ʔっ")
             bank_operation(user_details)
     if flag == 0:
         print("Invalid account or password.")
@@ -61,10 +61,11 @@ def login():
 
 def bank_operation(user):
     now = datetime.datetime.now()
-    print("Welcome %s %s." % (user[0], user[1]))
+    print("Welcome %s %s." % (user[1], user[2]))
     print("The time is:")
     print(now.strftime("%m-%d-%y, %H:%M:%S"))
-    selected_option = int(input("What would you like to do?\n(1) Deposit\n(2) Withdrawal\n(3) Log out\n(4) Exit\n"))
+    selected_option = int(
+        input("What would you like to do?\n(1) Deposit\n(2) Withdrawal\n(3) Report an issue\n(4) Log out\n(5) Exit\n"))
 
     if selected_option == 1:
         deposit_operation()
@@ -74,6 +75,9 @@ def bank_operation(user):
         elif make_another_trans == 2:
             print("Have a nice day!")
             exit()
+        else:
+            print("Invalid option selected.")
+            bank_operation(user)
 
     elif selected_option == 2:
         withdrawal_operation()
@@ -83,13 +87,28 @@ def bank_operation(user):
         elif make_another_trans == 2:
             print("Have a nice day!")
             exit()
+        else:
+            print("Invalid option selected.")
+            bank_operation(user)
 
     elif selected_option == 3:
+        complaint_operation()
+        return_to_op = int(input("Return to operations menu?\n(1) Yes\n(2) No\n"))
+        if return_to_op == 1:
+            bank_operation(user)
+        elif return_to_op == 2:
+            print("Have a nice day!")
+            exit()
+        else:
+            print("Invalid option selected.")
+            bank_operation(user)
+
+    elif selected_option == 4:
         print('Logging Out...')
         print('You are now logged out. Redirecting to home page.')
         init()
 
-    elif selected_option == 4:
+    elif selected_option == 5:
         print("Have a nice day!")
         exit()
 
@@ -99,15 +118,21 @@ def bank_operation(user):
 
 
 def withdrawal_operation():
-    print("This is the withdrawal page.")
-    withdraw_amount = int(input("How much would you like to withdraw?"))
+    print("***** Make a withdrawal *****")
+    withdraw_amount = int(input("How much would you like to withdraw?\n"))
     print("Please take your $%s." % withdraw_amount)
 
 
 def deposit_operation():
-    print("This is the deposit page.")
-    deposit_amount = int(input("How much would you like to deposit?"))
+    print("***** Make a deposit *****")
+    deposit_amount = int(input("How much would you like to deposit?\n"))
     print("Depositing $%s." % deposit_amount)
+
+
+def complaint_operation():
+    print("***** Report an issue *****")
+    input("What issue would you like to report?\n")
+    print("Thank you for contacting us.")
 
 
 def generate_account_number():
