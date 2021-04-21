@@ -1,16 +1,10 @@
-# Last updated April 19, 2021
+# Last updated April 21, 2021
 # IMPORTS
 import random
 import datetime
 import validation
 import database
 from getpass import getpass
-
-
-# DATABASE
-# user_database = {1111111111: ['Soph', 'Velasquez', 'soph@email.com', 'pwSoph', 1000],
-#                  2222222222: ["Jazz", "Jazz", "jazz@email.com", "pwJazz", 1500],
-#                  3333333333: ["Jo", "Jo", "jojo@email.com", "pwJojo", 2000]}
 
 
 # INITIALIZING THE SYSTEM // DEFINING FUNCTIONS
@@ -37,7 +31,7 @@ def register():
 
     try:
         account_number = generate_account_number()
-    except:
+    except FileExistsError:
         print("An unexpected error occurred. Please try again later.")
         init()
 
@@ -79,7 +73,8 @@ def login():
 
 def bank_operation(user):
     now = datetime.datetime.now()
-
+    # NOW CREATING LOGIN_SESSION.TXT
+    database.create_auth_session_file()
     print("Welcome %s %s." % (user[0], user[1]))
     print("The time is:")
     print(now.strftime("%m-%d-%y, %H:%M:%S"))
@@ -87,11 +82,13 @@ def bank_operation(user):
         input("What would you like to do?\n(1) Deposit\n(2) Withdrawal\n(3) Report an issue\n(4) Log out\n(5) Exit\n"))
 
     if selected_option == 1:
-        deposit_operation(user)
+        database.pre_deposit(user)
         make_another_trans = int(input("Make another transaction?\n(1) Yes\n(2) No\n"))
         if make_another_trans == 1:
             bank_operation(user)
         elif make_another_trans == 2:
+            # DELETE LOGIN_SESSION.TXT
+            database.remove_auth_session_file()
             print("Have a nice day!")
             exit()
         else:
@@ -99,11 +96,13 @@ def bank_operation(user):
             bank_operation(user)
 
     elif selected_option == 2:
-        withdrawal_operation(user)
+        database.pre_withdraw(user)
         make_another_trans = int(input("Make another transaction?\n(1) Yes\n(2) No\n"))
         if make_another_trans == 1:
             bank_operation(user)
         elif make_another_trans == 2:
+            # DELETE LOGIN_SESSION.TXT
+            database.remove_auth_session_file()
             print("Have a nice day!")
             exit()
         else:
@@ -116,6 +115,8 @@ def bank_operation(user):
         if return_to_menu == 1:
             bank_operation(user)
         elif return_to_menu == 2:
+            # DELETE LOGIN_SESSION.TXT
+            database.remove_auth_session_file()
             print("Have a nice day!")
             exit()
         else:
@@ -124,40 +125,20 @@ def bank_operation(user):
 
     elif selected_option == 4:
         print('Logging Out...')
+        # DELETE LOGIN_SESSION.TXT
+        database.remove_auth_session_file()
         print('You are now logged out. Redirecting to home page.')
         init()
 
     elif selected_option == 5:
+        # DELETE LOGIN_SESSION.TXT
+        database.remove_auth_session_file()
         print("Have a nice day!")
         exit()
 
     else:
         print("Invalid option selected.")
         bank_operation(user)
-
-
-def deposit_operation(user):
-    print("\n***** Make a deposit *****")
-    # Convert string to integer
-    current_balance = int((user[4]))
-    # get and display current balance
-    print("Your current balance is: $%f" % current_balance)
-    # get amount to deposit
-    deposit_amount = int(input("How much would you like to deposit?\n"))
-    database.deposit(user, deposit_amount)
-    print("Your current balance is now: $%f" % current_balance)
-
-
-def withdrawal_operation(user):
-    print("\n***** Make a withdrawal *****")
-    # Convert string to integer
-    current_balance = int((user[4]))
-    # get and display current balance
-    print("Your current balance is: $%f" % current_balance)
-    # get amount to withdraw
-    withdraw_amount = int(input("How much would you like to withdraw?\n"))
-    # subtract withdraw amount from current balance.
-    database.withdraw(user, withdraw_amount)
 
 
 def complaint_operation():
